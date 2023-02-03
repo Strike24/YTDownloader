@@ -45,7 +45,7 @@ async function convertToMp3() {
               Youtube to MP3 🔁
             </h1>
             <p style={{ textAlign: "center" }}>
-              Convert audio from YouTube to MP3
+              Convert AUDIO from YouTube to MP3
             </p>
           </div>
         </div>
