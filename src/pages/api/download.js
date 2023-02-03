@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
         console.log("passed")
     } catch (error) {
-        res.status(500).send("Error, Video not found. Please try again with the right link")
+        res.status(500)
     }
 
 
