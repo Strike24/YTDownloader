@@ -29,8 +29,16 @@ export default function Home() {
       `/api/download?link=${youtubeLink}&format=${format}`
     );
     if (response.status === 400) return setInvalid(true);
+              showNotification({
+            id: 'download',
+            loading: true,
+            title: 'Downloading File...',
+            message: 'Downloading may take a couple seconds. Please wait...',
+            autoClose: false,
+            disallowClose: true,
+          });
     window.location.href = `api/download?link=${youtubeLink}&format=${format}`;
-    showNotification({
+    updateNotification({
       color: "teal",
       title: "File Downloaded Successfully ✅",
       message: "Hope you are having a good day! 😉",
@@ -43,7 +51,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>YouTube Audio Downloader 🔁</title>
+        <title>YouTube Downloader 🔁</title>
         <meta
           name="description"
           content="Youtube Audio to MP3, Created by: Strike#1800"
@@ -55,10 +63,10 @@ export default function Home() {
         <div className={styles.description}>
           <div>
             <h1 style={{ fontSize: "40px", marginBottom: "10px" }}>
-              Youtube to MP3 🔁
+              Youtube to {format.toUpperCase()} 🔁
             </h1>
             <p style={{ textAlign: "center" }}>
-              Convert AUDIO from YouTube to MP3
+              Convert AUDIO from YouTube to {format.toUpperCase()}
             </p>
           </div>
         </div>
@@ -85,10 +93,9 @@ export default function Home() {
                     label: (
                       <Center>
                           <Video size={16} />
-                        <Box ml={10}>MP4 ❌</Box>
+                        <Box ml={10}>MP4</Box>
                       </Center>
                     ),
-                    disabled: true,
                     value: "mp4",
                   },
                   {
