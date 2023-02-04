@@ -6,35 +6,49 @@ import {
   Input,
   Checkbox,
   Button,
-  Group,
+  SegmentedControl,
+  Center,
   Box,
-  Text,
-  Tooltip,
 } from "@mantine/core";
-import { Download, AlertCircle } from "tabler-icons-react";
+import { Download, Video, BrandSoundcloud, Check } from "tabler-icons-react";
+import { showNotification, updateNotification } from "@mantine/notifications";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
-
 export default function Home() {
   const [invalid, setInvalid] = useState(false);
+  const [format, setFormat] = useState("mp4");
 
+  async function convertToMp3() {
+    //get the youtube link from the input with the id youtubelink
+    const youtubeLink = document.getElementById("youtubelink").value;
+    if (!youtubeLink) return setInvalid(true);
+    //redirect to another web page
+    const response = await fetch(
+      `/api/download?link=${youtubeLink}&format=${format}`
+    );
+    if (response.status === 500) return setInvalid(true);
+    window.location.href = `api/download?link=${youtubeLink}&format=${format}`;
+      showNotification({
+        color: "teal",
+        title: "File Downloaded Successfully ✅",
+        message:
+          "Hope you are having a good day! 😉",
+        icon: <Check size={16} />,
+        autoClose: 2000,
+        id: "download"
+      });
 
-async function convertToMp3() {
-  //get the youtube link from the input with the id youtubelink
-  const youtubeLink = document.getElementById("youtubelink").value;
-  console.log(youtubeLink);
-  //redirect to another web page
-  window.location.href = `api/download?link= + ${youtubeLink}`;
-
-}
+  }
 
   return (
     <>
       <Head>
         <title>YouTube Audio Downloader 🔁</title>
-        <meta name="description" content="Youtube Audio to MP3, Created by: Strike#1800" />
+        <meta
+          name="description"
+          content="Youtube Audio to MP3, Created by: Strike#1800"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -52,19 +66,50 @@ async function convertToMp3() {
         <div className={styles.mainLeft}>
           <div>
             <Input.Wrapper
-            label="YouTube Video Link"
-            description="Please enter a valid YouTube video link."
+              label="YouTube Video Link"
+              description="Please enter a valid YouTube video link."
             >
               <Input
                 id="youtubelink"
                 variant="filled"
-                placeholder="https://www.youtube.com/watch"
+                placeholder="Your YouTube Video Link"
+                onClick={() => setInvalid(false)}
                 size="md"
-                style={{ paddingBottom: "1rem" }}
+                style={{ paddingBottom: "0.5rem" }}
                 invalid={invalid}
               />
+              <SegmentedControl
+                value={format}
+                onChange={setFormat}
+                data={[
+                  {
+                    label: (
+                      <Center>
+                        <Video size={16} />
+                        <Box ml={10}>MP4</Box>
+                      </Center>
+                    ),
+                    value: "mp4",
+                  },
+                  {
+                    label: (
+                      <Center>
+                        <BrandSoundcloud size={16} />
+                        <Box ml={10}>MP3</Box>
+                      </Center>
+                    ),
+                    value: "mp3",
+                  },
+                ]}
+              />
             </Input.Wrapper>
-            <Button onClick={convertToMp3} leftIcon={<Download></Download>}> Download as MP3</Button>
+            <Button
+              style={{ marginTop: "1.5rem" }}
+              onClick={convertToMp3}
+              leftIcon={<Download></Download>}
+            >
+              Download as {format.toUpperCase()}
+            </Button>
           </div>
         </div>
       </main>

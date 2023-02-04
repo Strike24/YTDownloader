@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 
 export default function App({ Component, pageProps }) {
   return (
@@ -11,7 +12,9 @@ export default function App({ Component, pageProps }) {
         colorScheme: 'dark',
       }}
     >
-      <Component {...pageProps} />
+      <NotificationsProvider>
+        <Component {...pageProps} />
+      </NotificationsProvider>
     </MantineProvider>
   )
 }
