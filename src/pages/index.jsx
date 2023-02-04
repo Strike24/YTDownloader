@@ -27,7 +27,7 @@ export default function Home() {
     const response = await fetch(
       `/api/download?link=${youtubeLink}&format=${format}`
     );
-    if (response.status === 500) return setInvalid(true);
+    if (response.status === 400) return setInvalid(true);
     window.location.href = `api/download?link=${youtubeLink}&format=${format}`;
       showNotification({
         color: "teal",

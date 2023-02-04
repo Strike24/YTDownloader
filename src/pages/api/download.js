@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
         console.log("passed")
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(400).json({ error: error.message })
     }
 
 
