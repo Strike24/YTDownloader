@@ -9,15 +9,16 @@ import {
   SegmentedControl,
   Center,
   Box,
+  Tooltip,
 } from "@mantine/core";
-import { Download, Video, BrandSoundcloud, Check } from "tabler-icons-react";
+import { Download, Video, BrandSoundcloud, Check, Ce } from "tabler-icons-react";
 import { showNotification, updateNotification } from "@mantine/notifications";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [invalid, setInvalid] = useState(false);
-  const [format, setFormat] = useState("mp4");
+  const [format, setFormat] = useState("mp3");
 
   async function convertToMp3() {
     //get the youtube link from the input with the id youtubelink
@@ -29,16 +30,14 @@ export default function Home() {
     );
     if (response.status === 400) return setInvalid(true);
     window.location.href = `api/download?link=${youtubeLink}&format=${format}`;
-      showNotification({
-        color: "teal",
-        title: "File Downloaded Successfully ✅",
-        message:
-          "Hope you are having a good day! 😉",
-        icon: <Check size={16} />,
-        autoClose: 2000,
-        id: "download"
-      });
-
+    showNotification({
+      color: "teal",
+      title: "File Downloaded Successfully ✅",
+      message: "Hope you are having a good day! 😉",
+      icon: <Check size={16} />,
+      autoClose: 2000,
+      id: "download",
+    });
   }
 
   return (
@@ -85,10 +84,11 @@ export default function Home() {
                   {
                     label: (
                       <Center>
-                        <Video size={16} />
-                        <Box ml={10}>MP4</Box>
+                          <Video size={16} />
+                        <Box ml={10}>MP4 ❌</Box>
                       </Center>
                     ),
+                    disabled: true,
                     value: "mp4",
                   },
                   {
